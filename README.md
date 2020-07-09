@@ -6,4 +6,4 @@ How works?
 1. Zenity creates a field input where you should enter the name of the process that yoy want to have the screen focus.
 2. Use wmctrl to change the focus
 
-![Script-Image](https://raw.githubusercontent.com/kb05/zenity-window-focus/blob/master/images/zenity-window-focus.gif)
+![Script-Image](https://raw.githubusercontent.com/kb05/zenity-window-focus/master/images/zenity-window-focus.gif)
