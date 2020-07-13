@@ -45,7 +45,7 @@ while getopts "nhl" opt; do
                     --text "${windowText}" \
                     --width="${windowWidth}" \
                     --height="${windowHeight}" \
-                    --column="asddsa" \
+                    --column="Process" \
                     --column="Information" \
                     --print-column=2
         )
