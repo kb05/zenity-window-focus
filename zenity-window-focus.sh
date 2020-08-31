@@ -17,7 +17,7 @@ for arg in "$@"; do
     esac
 done
 
-while getopts "nhl" opt; do
+while getopts "nhlf" opt; do
     case "$opt" in
     "h")
         echo "Usage:"
@@ -48,6 +48,19 @@ while getopts "nhl" opt; do
                     --column="Process" \
                     --column="Information" \
                     --print-column=2
+        )
+        ;;
+     "f")
+
+        windowHeight=250
+        windowWidth=600
+ 
+        # Get the processes that have active GUI
+        processList=$(wmctrl -lp | tr -s ' ' | cut -d' ' -f5-)
+        processNames=$(echo "$processList" | sed 's/.* - //g')
+
+        processName=$(
+            echo "$processList" | fzf
         )
         ;;
     "n")
