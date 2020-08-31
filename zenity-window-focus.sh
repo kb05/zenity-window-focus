@@ -4,8 +4,22 @@ set -e
 
 windowTitle="Zenity Window Focus"
 windowText="Enter the process to be focused"
-
+fieldSeparator="-->";
 defaultWindowWidth=450
+
+function get_process_information {
+	if [ -z "$1" ]
+  	then
+    	echo "PID not supplied";
+    	return 1;
+	fi
+
+	windowName=$(wmctrl -lp  | grep $1 | tr -s ' ' | cut -d' ' -f5-);
+	processName=$(ps aux | grep -v grep | grep $1 | grep -oE '[^ ]?+$')
+
+    echo $windowName $fieldSeparator $processName;
+    return 0;
+}
 
 for arg in "$@"; do
     shift
@@ -54,15 +68,20 @@ while getopts "nhlf" opt; do
 
         windowHeight=250
         windowWidth=600
- 
-        # Get the processes that have active GUI
-        processList=$(wmctrl -lp | tr -s ' ' | cut -d' ' -f5-)
-        processNames=$(echo "$processList" | sed 's/.* - //g')
+         # Get the processes that have active GUI
+         processList=$(wmctrl -lp | tr -s ' ' | cut -d' ' -f3 )
 
-        processName=$(
-            echo "$processList" | fzf
-        )
-        ;;
+informationList='';
+
+ while IFS= read -r pid; do
+ 	 processInformation=$(get_process_information $pid);
+     informationList=$(printf "${informationList} \n ${processInformation}");
+ done <<< "$processList"
+
+  processName=$(
+            echo "$informationList" | fzf | awk -F $fieldSeparator 'BEGIN {}{print $1}'
+        );
+ 	;;
     "n")
         windowHeight=120
         windowWidth=250
