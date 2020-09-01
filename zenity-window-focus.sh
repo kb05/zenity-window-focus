@@ -7,6 +7,10 @@ windowText="Enter the process to be focused"
 fieldSeparator="-->";
 defaultWindowWidth=450
 
+currentWindowNames=$(wmctrl -lp );
+currentProcessNames=$(ps aux | grep -v grep );
+
+
 function get_process_information {
 	if [ -z "$1" ]
   	then
@@ -14,8 +18,8 @@ function get_process_information {
     	return 1;
 	fi
 
-	windowName=$(wmctrl -lp  | grep $1 | tr -s ' ' | cut -d' ' -f5-);
-	processName=$(ps aux | grep -v grep | grep $1 | grep -oE '[^ ]?+$')
+	windowName=$(echo "$currentWindowNames" | grep $1 | tr -s ' ' | cut -d' ' -f5-);
+	processName=$(echo "$currentProcessNames" | grep $1 | grep -oE '[^ ]?+$')
 
     echo $windowName $fieldSeparator $processName;
     return 0;
